@@ -1,6 +1,5 @@
 package com.shu.shust2.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +23,7 @@ import com.shu.shust2.activity.DetailActivity;
 import com.shu.shust2.adapter.HotAdapter;
 import com.shu.shust2.adapter.RecommendAdapter;
 import com.shu.shust2.model.Hot;
-import com.shu.shust2.model.HotBean;
+import com.shu.shust2.model.IndexBean;
 import com.shu.shust2.model.Recommend;
 import com.shu.shust2.util.JsonUtil;
 import com.shu.shust2.util.OkConnect;
@@ -45,16 +44,17 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
 
     private List<String> images;
     private List<String> titles;
-    private List<Recommend> recommends;
+    private List<Recommend> recommends = new ArrayList<>();
     private List<Hot> hots = new ArrayList<>();
     private Recommend recommend;
     private RecommendAdapter adapter;
     private Hot hot;
-    private HotBean hotBean;
-    private HotBean.ResultsBean resultsBean;
-    private List<HotBean.ResultsBean.AssociationBean> associations;
     private HotAdapter adapter1;
-    private String hotData;     //接收到的服务器发的热门社团的数据
+    private IndexBean indexBean;
+    private IndexBean.ResultsBean resultsBean;
+    private List<IndexBean.ResultsBean.ActivityBean> activitys;
+    private List<IndexBean.ResultsBean.AssociationBean> associations;
+    private String indexData;     //接收到的服务器发的首页数据
     private Handler requestHandler;
 
     private static final String HOT_CLUB_URL = "http://api.dev.shust.cn/index?page=1";
@@ -71,6 +71,7 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
                     "http://img3.imgtn.bdimg.com/it/u=619037615,2380657108&fm=214&gp=0.jpg",
                     "http://k1.jsqq.net/uploads/allimg/160526/5-1605260619440-L.jpg"};
 
+    private RecyclerView recyclerView;
     private RecyclerView recyclerView1;
 
     @Nullable
@@ -100,11 +101,10 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
         banner.start();
 
         //推荐活动
-        RecyclerView recyclerView = view.findViewById(R.id.rv_recommend_activity);
+        recyclerView = view.findViewById(R.id.rv_recommend_activity);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(manager);
-        adapter = new RecommendAdapter(recommends);
-        recyclerView.setAdapter(adapter);
+
 
         //热门社团
         recyclerView1 = view.findViewById(R.id.rv_hot_club);
@@ -117,46 +117,44 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
     private void initData() {
         //Banner图片的数据初始化
         images = new ArrayList<>();
-        images.add("http://i.imgur.com/DvpvklR.png");
+        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504700222567&di=ccc3515392c2906e0073fd8b38f3f9a2&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F0b55b319ebc4b745d1a5e304c5fc1e178a8215ea.jpg");
         images.add("http://pic138.nipic.com/file/20170816/22554547_123516885000_2.jpg");
         images.add("http://pic138.nipic.com/file/20170816/22554547_123534011000_2.jpg");
 
         //Banner标题的数据初始化
         titles = new ArrayList<>();
-        titles.add("aaaaaaaaa");
-        titles.add("bbbbbbbbb");
-        titles.add("ccccccccc");
+        titles.add("社团助手v1.0上线啦!");
+        titles.add("快来和我们一起玩耍~!");
+        titles.add("期待你的访问哦~");
 
-        //推荐活动的数据初始化
-        recommends = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            recommend = new Recommend(path[random.nextInt(7)], "测试" + i, "伟长楼");
-            recommends.add(recommend);
-        }
-
-        //热门社团数据初始化
+        //首页数据初始化
         requestHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case REQUEST_SUCCESS:
-                        Log.d(TAG, "handleMessage: " + hotData);
-                        hotBean = JsonUtil.parseJson(hotData, HotBean.class);
-                        if (hotBean.getErrorCode() != 0)
+                        indexBean = JsonUtil.parseJson(indexData, IndexBean.class);
+                        if (indexBean.getErrorCode() != 0)
                             Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
                         else {
-                            if (!hotBean.getErrorStr().equals("ok"))
+                            if (!indexBean.getErrorStr().equals("ok"))
                                 Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
                             else {
-//                                Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
-                                resultsBean = hotBean.getResults();
+                                resultsBean = indexBean.getResults();
+                                activitys = resultsBean.getActivity();
                                 associations = resultsBean.getAssociation();
-                                for (HotBean.ResultsBean.AssociationBean associationBean : associations) {
+                                for (IndexBean.ResultsBean.ActivityBean activityBean : activitys) {
+                                    recommend = new Recommend(path[random.nextInt(7)], activityBean.getName(), activityBean.getLocation());
+                                    recommends.add(recommend);
+                                }
+                                for (IndexBean.ResultsBean.AssociationBean associationBean : associations) {
                                     hot = new Hot(path[random.nextInt(7)], associationBean.getNick_name(), associationBean.getStar());
                                     hots.add(hot);
                                 }
                             }
                         }
+                        adapter = new RecommendAdapter(recommends);
+                        recyclerView.setAdapter(adapter);
                         adapter1 = new HotAdapter(hots);
                         recyclerView1.setAdapter(adapter1);
                         break;
@@ -175,8 +173,9 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
                 Message msg = requestHandler.obtainMessage();
                 OkConnect connect = new OkConnect();
                 try {
-                    hotData = connect.run(HOT_CLUB_URL);
-                    if (!hotData.equals("error"))
+                    indexData = connect.run(HOT_CLUB_URL);
+                    Log.d(TAG, "run: " + indexData);
+                    if (!indexData.equals("error"))
                         msg.what = REQUEST_SUCCESS;
                     else
                         msg.what = REQUEST_FAIL;
