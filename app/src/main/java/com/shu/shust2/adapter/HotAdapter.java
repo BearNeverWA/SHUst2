@@ -24,6 +24,7 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Hot> mHotList;
+    private Hot hot;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -52,8 +53,8 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final Hot hot = mHotList.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        hot = mHotList.get(position);
         holder.clubName.setText(hot.getClubName());
         String star;
         switch (hot.getClubStar()) {
@@ -83,6 +84,8 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos = holder.getAdapterPosition();
+                hot = mHotList.get(pos);
                 String name = hot.getClubName();
                 Intent intent = new Intent(mContext, ClubDetailActivity.class);
                 intent.putExtra("name", name);
