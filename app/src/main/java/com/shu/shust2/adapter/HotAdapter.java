@@ -3,6 +3,7 @@ package com.shu.shust2.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> {
     private Context mContext;
     private List<Hot> mHotList;
     private Hot hot;
+
+    private static final String TAG = "HotAdapter";
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -86,11 +89,10 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> {
             public void onClick(View view) {
                 int pos = holder.getAdapterPosition();
                 hot = mHotList.get(pos);
-                String name = hot.getClubName();
-                String logoPath = hot.getClubLogo();
                 Intent intent = new Intent(mContext, ClubDetailActivity.class);
-                intent.putExtra("name", name);
-                intent.putExtra("logo", logoPath);
+                intent.putExtra("name", hot.getClubName());
+                intent.putExtra("logo", hot.getClubLogo());
+                intent.putExtra("id", hot.getId());
                 mContext.startActivity(intent);
             }
         });

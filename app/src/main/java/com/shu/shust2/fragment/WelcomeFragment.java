@@ -64,7 +64,7 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
     private static final String TAG = "WelcomeFragment";
 
     private Random random = new Random();
-    private String[] path =
+    public static String[] path =
             {"http://img4.imgtn.bdimg.com/it/u=3032878196,1070032624&fm=214&gp=0.jpg", "http://www.chedan5.com/upload/article/201701/16/101752587c2d50dac82q8cQIM.jpg",
                     "http://k2.jsqq.net/uploads/allimg/1703/7_170308145938_9.jpg", "http://k1.jsqq.net/uploads/allimg/1612/1JAW137-2.jpg",
                     "http://www.shzbbc.com/uploads/tu/ztmb/slt/bd17365762.jpg", "http://www.chedan5.com/upload/article/201701/16/101747587c2d4b4a303E2Ya55.jpg",
@@ -146,11 +146,11 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
                                 activitys = resultsBean.getActivity();
                                 associations = resultsBean.getAssociation();
                                 for (IndexBean.ResultsBean.ActivityBean activityBean : activitys) {
-                                    recommend = new Recommend(path[random.nextInt(7)], activityBean.getName(), activityBean.getLocation());
+                                    recommend = new Recommend(path[random.nextInt(7)], activityBean.getName(), activityBean.getLocation(), activityBean.getId());
                                     recommends.add(recommend);
                                 }
                                 for (IndexBean.ResultsBean.AssociationBean associationBean : associations) {
-                                    hot = new Hot(path[random.nextInt(7)], associationBean.getNick_name(), associationBean.getStar());
+                                    hot = new Hot(path[random.nextInt(7)], associationBean.getNick_name(), associationBean.getStar(), associationBean.getId());
                                     hots.add(hot);
                                 }
                             }
@@ -176,7 +176,6 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
                 OkConnect connect = new OkConnect();
                 try {
                     indexData = connect.run(HOT_CLUB_URL);
-                    Log.d(TAG, "run: " + indexData);
                     if (!indexData.equals("error"))
                         msg.what = REQUEST_SUCCESS;
                     else

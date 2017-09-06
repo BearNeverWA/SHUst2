@@ -6,21 +6,23 @@ package com.shu.shust2.model;
 
 public class Club {
 
-    private int clubLogo;
+    private String clubLogo;
     private String clubName;
     private String clubType;
     private int clubStar;
     private String clubIntro;
+    private int id;
 
-    public Club(int clubLogo, String clubName, String clubType, int clubStar, String clubIntro) {
+    public Club(String clubLogo, String clubName, String clubType, int clubStar, String clubIntro, int id) {
         this.clubLogo = clubLogo;
         this.clubName = clubName;
         this.clubType = clubType;
         this.clubStar = clubStar;
         this.clubIntro = clubIntro;
+        this.id = id;
     }
 
-    public int getClubLogo() {
+    public String getClubLogo() {
         return clubLogo;
     }
 
@@ -38,5 +40,9 @@ public class Club {
 
     public String getClubIntro() {
         return clubIntro;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -9,11 +9,13 @@ public class Hot {
     private String clubLogo;
     private String clubName;
     private int clubStar;
+    private int id;
 
-    public Hot(String clubLogo, String clubName, int clubStar) {
+    public Hot(String clubLogo, String clubName, int clubStar, int id) {
         this.clubLogo = clubLogo;
         this.clubName = clubName;
         this.clubStar = clubStar;
+        this.id = id;
     }
 
     public String getClubLogo() {
@@ -26,5 +28,9 @@ public class Hot {
 
     public int getClubStar() {
         return clubStar;
+    }
+
+    public int getId() {
+        return id;
     }
 }

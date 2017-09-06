@@ -53,37 +53,97 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/club_type"
-                style="@style/ClubDetailText"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/item_rectangle"
-                android:text="类型" />
+                android:padding="15dp">
 
-            <TextView
-                android:id="@+id/club_star"
-                style="@style/ClubDetailText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/item_rectangle"
-                android:text="星级" />
+                <TextView
+                    style="@style/ClubDetailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="类型" />
 
-            <TextView
-                android:id="@+id/club_chairman"
-                style="@style/ClubDetailText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/item_rectangle"
-                android:text="社长" />
+                <TextView
+                    android:id="@+id/club_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="test" />
 
-            <TextView
-                android:id="@+id/club_teacher"
-                style="@style/ClubDetailText"
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/item_rectangle"
-                android:text="指导老师" />
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/ClubDetailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="星级" />
+
+                <TextView
+                    android:id="@+id/club_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="test" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_rectangle"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/ClubDetailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="社长" />
+
+                <TextView
+                    android:id="@+id/club_chairman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="test" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_rectangle"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/ClubDetailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="指导老师" />
+
+                <TextView
+                    android:id="@+id/club_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="test" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/container_qr_code"

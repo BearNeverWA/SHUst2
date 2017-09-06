@@ -9,11 +9,13 @@ public class Recommend {
     private String name;
     private String imageId;
     private String location;
+    private int id;
 
-    public Recommend(String imageId, String name, String location) {
+    public Recommend(String imageId, String name, String location, int id) {
         this.imageId = imageId;
         this.name = name;
         this.location = location;
+        this.id = id;
     }
 
     public String getName() {
@@ -26,5 +28,9 @@ public class Recommend {
 
     public String getLocation() {
         return location;
+    }
+
+    public int getId() {
+        return id;
     }
 }

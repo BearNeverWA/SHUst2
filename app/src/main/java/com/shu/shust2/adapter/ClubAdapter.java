@@ -1,6 +1,7 @@
 package com.shu.shust2.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shu.shust2.R;
+import com.shu.shust2.activity.ClubDetailActivity;
 import com.shu.shust2.model.Club;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class ClubAdapter extends Adapter<ViewHolder> {
 
     private Context mContext;
     private List clubList;
+    private Club club;
 
     private final static int TYPE_ITEM = 0;
     private final static int TYPE_FOOT = 1;
@@ -37,7 +40,6 @@ public class ClubAdapter extends Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        Log.d("test", "getItemCount: " + clubList);
         return clubList.size() == 0 ? 0 : clubList.size() + 1;
     }
 
@@ -64,11 +66,10 @@ public class ClubAdapter extends Adapter<ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
-            int pos = holder.getLayoutPosition();
-            Club club = (Club) clubList.get(position);
-            Glide.with(mContext).load(club.getClubLogo()).into(((ItemViewHolder) holder).clubLogo);
+            club = (Club) clubList.get(position);
+            Glide.with(mContext).load(club.getClubLogo()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(((ItemViewHolder) holder).clubLogo);
             ((ItemViewHolder) holder).clubName.setText(club.getClubName());
             switch (club.getClubType()) {
                 case "学术科技":
@@ -122,6 +123,18 @@ public class ClubAdapter extends Adapter<ViewHolder> {
             }
             ((ItemViewHolder) holder).clubStar.setText(star);
             ((ItemViewHolder) holder).clubIntro.setText(club.getClubIntro());
+            ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = holder.getAdapterPosition();
+                    club = (Club) clubList.get(pos);
+                    Intent intent = new Intent(mContext, ClubDetailActivity.class);
+                    intent.putExtra("name", club.getClubName());
+                    intent.putExtra("logo", club.getClubLogo());
+                    intent.putExtra("id", club.getId());
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 

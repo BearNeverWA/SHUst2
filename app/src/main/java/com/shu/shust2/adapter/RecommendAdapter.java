@@ -24,6 +24,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
 
     private Context mContext;
     private List<Recommend> mRecommendList;
+    private Recommend recommend;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -53,7 +54,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Recommend recommend = mRecommendList.get(position);
+        recommend = mRecommendList.get(position);
         holder.name.setText(recommend.getName());
         Glide.with(mContext).load(recommend.getImageId()).into(holder.imageView);
         holder.location.setText(recommend.getLocation());
@@ -62,9 +63,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = recommend.getName();
                 Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("title", title);
+                intent.putExtra("title", recommend.getName());
+                intent.putExtra("location", recommend.getLocation());
+                intent.putExtra("logo", recommend.getImageId());
+                intent.putExtra("id", recommend.getId());
                 mContext.startActivity(intent);
             }
         });
