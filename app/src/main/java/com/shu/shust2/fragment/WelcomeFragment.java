@@ -102,6 +102,8 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
 
         //推荐活动
         recyclerView = view.findViewById(R.id.rv_recommend_activity);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(manager);
 
