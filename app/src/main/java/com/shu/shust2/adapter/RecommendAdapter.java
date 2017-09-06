@@ -28,12 +28,14 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        TextView textView;
+        TextView name;
+        TextView location;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_recommend);
-            textView = itemView.findViewById(R.id.tv_recommend);
+            name = itemView.findViewById(R.id.tv_recommend);
+            location = itemView.findViewById(R.id.tv_recommend_location);
         }
     }
 
@@ -52,16 +54,17 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Recommend recommend = mRecommendList.get(position);
-        holder.textView.setText(recommend.getName());
+        holder.name.setText(recommend.getName());
         Glide.with(mContext).load(recommend.getImageId()).into(holder.imageView);
+        holder.location.setText(recommend.getLocation());
 
         //注册点击事件
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title=recommend.getName();
-                Intent intent=new Intent(mContext, DetailActivity.class);
-                intent.putExtra("title",title);
+                String title = recommend.getName();
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra("title", title);
                 mContext.startActivity(intent);
             }
         });

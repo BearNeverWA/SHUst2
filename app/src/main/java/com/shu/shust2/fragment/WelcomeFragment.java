@@ -108,6 +108,8 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
 
         //热门社团
         recyclerView1 = view.findViewById(R.id.rv_hot_club);
+        recyclerView1.setHasFixedSize(true);
+        recyclerView1.setNestedScrollingEnabled(false);
         LinearLayoutManager manager1 = new LinearLayoutManager(getActivity());
         recyclerView1.setLayoutManager(manager1);
     }
@@ -127,8 +129,8 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
 
         //推荐活动的数据初始化
         recommends = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            recommend = new Recommend(R.mipmap.ic_launcher, "测试" + i);
+        for (int i = 0; i < 4; i++) {
+            recommend = new Recommend(path[random.nextInt(7)], "测试" + i, "伟长楼");
             recommends.add(recommend);
         }
 
@@ -138,6 +140,7 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case REQUEST_SUCCESS:
+                        Log.d(TAG, "handleMessage: " + hotData);
                         hotBean = JsonUtil.parseJson(hotData, HotBean.class);
                         if (hotBean.getErrorCode() != 0)
                             Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
@@ -150,7 +153,6 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
                                 associations = resultsBean.getAssociation();
                                 for (HotBean.ResultsBean.AssociationBean associationBean : associations) {
                                     hot = new Hot(path[random.nextInt(7)], associationBean.getNick_name(), associationBean.getStar());
-                                    Log.d(TAG, "handleMessage: " + hot.getClubLogo() + hot.getClubName() + hot.getClubStar());
                                     hots.add(hot);
                                 }
                             }

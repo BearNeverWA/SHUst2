@@ -7,18 +7,24 @@ package com.shu.shust2.model;
 public class Recommend {
 
     private String name;
-    private int imageId;
+    private String imageId;
+    private String location;
 
-    public Recommend(int imageId, String name) {
+    public Recommend(String imageId, String name, String location) {
         this.imageId = imageId;
         this.name = name;
+        this.location = location;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getImageId() {
+    public String getImageId() {
         return imageId;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }
