@@ -24,7 +24,8 @@
         <activity android:name=".activity.DetailActivity" />
         <activity
             android:name=".activity.ClubDetailActivity"
-            android:label="" />
+            android:label=""
+            android:theme="@style/ActivityTheme" />
     </application>
 
 </manifest>

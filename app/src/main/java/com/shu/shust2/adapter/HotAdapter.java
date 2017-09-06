@@ -87,8 +87,10 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> {
                 int pos = holder.getAdapterPosition();
                 hot = mHotList.get(pos);
                 String name = hot.getClubName();
+                String logoPath = hot.getClubLogo();
                 Intent intent = new Intent(mContext, ClubDetailActivity.class);
                 intent.putExtra("name", name);
+                intent.putExtra("logo", logoPath);
                 mContext.startActivity(intent);
             }
         });
