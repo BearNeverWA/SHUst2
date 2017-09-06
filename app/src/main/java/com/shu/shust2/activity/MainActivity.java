@@ -28,12 +28,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
-//        //导航栏的初始化
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("");
-
         //控件初始化
         ViewPager viewPager = (ViewPager) findViewById(R.id.vp_main);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tl_main);

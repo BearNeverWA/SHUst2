@@ -1,5 +1,6 @@
 package com.shu.shust2.adapter;
 
+import android.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

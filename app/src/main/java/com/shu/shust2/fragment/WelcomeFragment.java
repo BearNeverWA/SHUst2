@@ -125,7 +125,7 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
         titles = new ArrayList<>();
         titles.add("社团助手v1.0上线啦!");
         titles.add("快来和我们一起玩耍~!");
-        titles.add("期待你的访问哦~");
+        titles.add("期待你的加入~");
 
         //首页数据初始化
         requestHandler = new Handler() {
