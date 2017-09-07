@@ -28,7 +28,6 @@ public class ClubDetailActivity extends AppCompatActivity {
 
     private Intent intent;
     private TextView type, star, chairman, teacher, intro;
-    private ImageView qqCode, wechatCode;
     private Handler handler;
     private String clubDetailData;
     private ClubDetail clubDetail;
@@ -56,8 +55,6 @@ public class ClubDetailActivity extends AppCompatActivity {
         star = (TextView) findViewById(R.id.club_star);
         chairman = (TextView) findViewById(R.id.club_chairman);
         teacher = (TextView) findViewById(R.id.club_teacher);
-        qqCode = (ImageView) findViewById(R.id.qq_code);
-        wechatCode = (ImageView) findViewById(R.id.wechat_code);
         intro = (TextView) findViewById(R.id.club_intro);
 
         setSupportActionBar(toolbar);
