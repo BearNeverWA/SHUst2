@@ -13,12 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.shu.shust2.R;
 import com.shu.shust2.adapter.ClubAdapter;
 import com.shu.shust2.model.Club;
 import com.shu.shust2.model.ClubBean;
+import com.shu.shust2.model.ClubSearch;
 import com.shu.shust2.util.JsonUtil;
 import com.shu.shust2.util.OkConnect;
 
@@ -37,7 +41,6 @@ public class ClubFragment extends Fragment {
     private List<Club> clubs = new ArrayList<>();
     private Club club;
     private ClubAdapter adapter = new ClubAdapter(clubs);
-    //    private String[] types = {"学术科技", "体育健身", "公益实践", "文化艺术", "社会科学", "理论学习"};
     private Handler handler = new Handler();
     private Handler dloadHandler;
     private RecyclerView recyclerView;
@@ -45,17 +48,28 @@ public class ClubFragment extends Fragment {
     private ClubBean.ResultsBean resultsBean;
     private List<ClubBean.ResultsBean.AssociationBean> associations;
     private Random random;
+    private LinearLayoutManager manager;
+    private Button btnSearch;
+    private RadioGroup rg;
+    private EditText etSearch;
+    private ClubSearch clubSearch;
+    private ClubSearch.ResultsBean resultsSearch;
+    private List<ClubSearch.ResultsBean.AssociationBean> association_search;
 
     boolean isLoading;
     private String clubData;
-    private String CLUB_URL;
+    //    private String CLUB_URL;
+    private String searchData;
 
     private static final String TAG = "ClubFragment";
     private static final int REQUEST_SUCCESS = 1;
     private static final int REQUEST_FAIL = 0;
+    private static final int SEARCH_SUCCESS = 2;
 
-    private static String CLUB_URL_TMP = "http://api.dev.shust.cn/association/list?page=";
+    private static String CLUB_URL_TMP = "http://api.dev.shust.cn/association/list";
+    private static String SEARCH_URL_TMP = "http://api.dev.shust.cn/association/result";
     private int pageNum;
+    private int checkedId;
 
     @Nullable
     @Override
@@ -69,7 +83,7 @@ public class ClubFragment extends Fragment {
 
         //社团list
         recyclerView = view.findViewById(R.id.rv_club);
-        final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -95,6 +109,57 @@ public class ClubFragment extends Fragment {
                 }
             }
         });
+
+        //单选框
+        rg = view.findViewById(R.id.rg_club);
+
+        //搜索
+        btnSearch = view.findViewById(R.id.btn_club_search);
+        etSearch = view.findViewById(R.id.et_club_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (rg.getCheckedRadioButtonId()) {
+                    case R.id.rb_all:
+                        checkedId = 0;
+                        break;
+                    case R.id.rb_five:
+                        checkedId = 5;
+                        break;
+                    case R.id.rb_four:
+                        checkedId = 4;
+                        break;
+                    case R.id.rb_three:
+                        checkedId = 3;
+                        break;
+                    case R.id.rb_two:
+                        checkedId = 2;
+                        break;
+                    case R.id.rb_one:
+                        checkedId = 1;
+                        break;
+                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = dloadHandler.obtainMessage();
+                        OkConnect connect = new OkConnect();
+                        try {
+                            Log.d(TAG, "run: " + urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, checkedId, 1));
+                            searchData = connect.run(urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, checkedId, 1));
+                            if (!searchData.equals("error"))
+                                msg.what = SEARCH_SUCCESS;
+                            else
+                                msg.what = REQUEST_FAIL;
+                            dloadHandler.sendMessage(msg);
+                        } catch (IOException e) {
+                            msg.what = REQUEST_FAIL;
+                        }
+                    }
+                }).start();
+            }
+        });
+
         initData();
 
         return view;
@@ -106,9 +171,7 @@ public class ClubFragment extends Fragment {
             pageNum = 1;
         } else
             pageNum = page + 1;
-        CLUB_URL = CLUB_URL_TMP + pageNum;
         random = new Random();
-
         //club列表数据初始化
         dloadHandler = new Handler() {
             @Override
@@ -137,6 +200,28 @@ public class ClubFragment extends Fragment {
                         } else
                             adapter.notifyDataSetChanged();
                         break;
+                    case SEARCH_SUCCESS:
+                        clubs.clear();
+                        clubSearch = JsonUtil.parseJson(searchData, ClubSearch.class);
+                        if (clubSearch.getErrorCode() != 0)
+                            Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
+                        else {
+                            if (!clubSearch.getErrorStr().equals("ok"))
+                                Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
+                            else {
+                                resultsSearch = clubSearch.getResults();
+                                association_search = resultsSearch.getAssociation();
+                                for (ClubSearch.ResultsBean.AssociationBean as : association_search) {
+                                    club = new Club(WelcomeFragment.path[random.nextInt(7)], as.getNick_name(),
+                                            as.getType(), as.getStar(), as.getWord_introduction(),
+                                            as.getId());
+                                    clubs.add(club);
+                                }
+                            }
+                        }
+                        adapter = new ClubAdapter(clubs);
+                        recyclerView.setAdapter(adapter);
+                        break;
                     case REQUEST_FAIL:
                         break;
                     default:
@@ -151,7 +236,7 @@ public class ClubFragment extends Fragment {
                 Message msg = dloadHandler.obtainMessage();
                 OkConnect connect = new OkConnect();
                 try {
-                    clubData = connect.run(CLUB_URL);
+                    clubData = connect.run(urlOp(CLUB_URL_TMP, "", 0, 0, pageNum));
                     if (!clubData.equals("error")) {
                         msg.what = REQUEST_SUCCESS;
                     } else
@@ -163,5 +248,9 @@ public class ClubFragment extends Fragment {
             }
         }).start();
         adapter.notifyItemRemoved(adapter.getItemCount());
+    }
+
+    private String urlOp(String tmp, String searchContent, int tp, int st, int pg) {
+        return tmp + "?association=" + searchContent + "&type=" + tp + "&star=" + st + "&page=" + pg;
     }
 }
