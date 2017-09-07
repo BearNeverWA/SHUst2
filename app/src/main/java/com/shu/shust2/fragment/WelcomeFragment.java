@@ -65,10 +65,13 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
 
     private Random random = new Random();
     public static String[] path =
-            {"http://img4.imgtn.bdimg.com/it/u=3032878196,1070032624&fm=214&gp=0.jpg", "http://www.chedan5.com/upload/article/201701/16/101752587c2d50dac82q8cQIM.jpg",
-                    "http://k2.jsqq.net/uploads/allimg/1703/7_170308145938_9.jpg", "http://k1.jsqq.net/uploads/allimg/1612/1JAW137-2.jpg",
-                    "http://www.shzbbc.com/uploads/tu/ztmb/slt/bd17365762.jpg", "http://www.chedan5.com/upload/article/201701/16/101747587c2d4b4a303E2Ya55.jpg",
-                    "http://img3.imgtn.bdimg.com/it/u=619037615,2380657108&fm=214&gp=0.jpg",
+            {"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504799212713&di=9d28377316740717ed9c31bc85d9d037&imgtype=0&src=http%3A%2F%2Fpic72.nipic.com%2Ffile%2F20150716%2F21422793_144600530000_2.jpg",
+                    "http://www.chedan5.com/upload/article/201701/16/101752587c2d50dac82q8cQIM.jpg",
+                    "http://k2.jsqq.net/uploads/allimg/1703/7_170308145938_9.jpg",
+                    "http://k1.jsqq.net/uploads/allimg/1612/1JAW137-2.jpg",
+                    "http://www.shzbbc.com/uploads/tu/ztmb/slt/bd17365762.jpg",
+                    "http://www.chedan5.com/upload/article/201701/16/101747587c2d4b4a303E2Ya55.jpg",
+                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504799308608&di=6a3f9f1b578112c376cd284a5849f8a7&imgtype=0&src=http%3A%2F%2Ftupian.enterdesk.com%2F2013%2Fmxy%2F12%2F28%2F1%2F3.jpg",
                     "http://k1.jsqq.net/uploads/allimg/160526/5-1605260619440-L.jpg"};
 
     private RecyclerView recyclerView;

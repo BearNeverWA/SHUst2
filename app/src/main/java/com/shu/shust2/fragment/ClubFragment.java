@@ -37,7 +37,7 @@ public class ClubFragment extends Fragment {
     private List<Club> clubs = new ArrayList<>();
     private Club club;
     private ClubAdapter adapter = new ClubAdapter(clubs);
-    private String[] types = {"学术科技", "体育健身", "公益实践", "文化艺术", "社会科学", "理论学习"};
+    //    private String[] types = {"学术科技", "体育健身", "公益实践", "文化艺术", "社会科学", "理论学习"};
     private Handler handler = new Handler();
     private Handler dloadHandler;
     private RecyclerView recyclerView;
@@ -48,10 +48,12 @@ public class ClubFragment extends Fragment {
 
     boolean isLoading;
     private String clubData;
+    private String CLUB_URL;
 
     private static final String TAG = "ClubFragment";
     private static final int REQUEST_SUCCESS = 1;
     private static final int REQUEST_FAIL = 0;
+
     private static String CLUB_URL_TMP = "http://api.dev.shust.cn/association/list?page=";
     private int pageNum;
 
@@ -104,6 +106,7 @@ public class ClubFragment extends Fragment {
             pageNum = 1;
         } else
             pageNum = page + 1;
+        CLUB_URL = CLUB_URL_TMP + pageNum;
         random = new Random();
 
         //club列表数据初始化
@@ -148,7 +151,6 @@ public class ClubFragment extends Fragment {
                 Message msg = dloadHandler.obtainMessage();
                 OkConnect connect = new OkConnect();
                 try {
-                    String CLUB_URL = CLUB_URL_TMP + pageNum;
                     clubData = connect.run(CLUB_URL);
                     if (!clubData.equals("error")) {
                         msg.what = REQUEST_SUCCESS;
@@ -162,5 +164,4 @@ public class ClubFragment extends Fragment {
         }).start();
         adapter.notifyItemRemoved(adapter.getItemCount());
     }
-
 }
