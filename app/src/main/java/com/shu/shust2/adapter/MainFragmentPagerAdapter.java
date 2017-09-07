@@ -1,13 +1,11 @@
 package com.shu.shust2.adapter;
 
-import android.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.shu.shust2.fragment.ActivityFragment;
 import com.shu.shust2.fragment.ClubFragment;
-import com.shu.shust2.fragment.MeFragment;
 import com.shu.shust2.fragment.WelcomeFragment;
 
 /**
