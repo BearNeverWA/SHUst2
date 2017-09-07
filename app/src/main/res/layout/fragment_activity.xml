@@ -46,6 +46,7 @@
                     android:background="@drawable/round_rectangle"
                     android:fitsSystemWindows="true"
                     android:hint="试试输入你感兴趣的社团吧"
+                    android:maxLines="1"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@drawable/color_cursor" />
 

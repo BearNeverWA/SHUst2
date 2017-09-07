@@ -21,6 +21,7 @@ import com.shu.shust2.R;
 import com.shu.shust2.adapter.ActivityAdapter;
 import com.shu.shust2.model.Activity;
 import com.shu.shust2.model.ActivityListBean;
+import com.shu.shust2.model.activitysearch;
 import com.shu.shust2.util.JsonUtil;
 import com.shu.shust2.util.OkConnect;
 
@@ -49,9 +50,9 @@ public class ActivityFragment extends Fragment {
     private LinearLayoutManager manager;
     private Button btnSearch;
     private EditText etSearch;
-//    private ActivitySearch ActivitySearch;
-//    private ActivitySearch.ResultsBean resultsSearch;
-//    private List<ActivitySearch.ResultsBean.AssociationBean> association_search;
+    private activitysearch activitySearch;
+    private activitysearch.ResultsBean resultsSearch;
+    private List<activitysearch.ResultsBean.ActivityBean> activitySearchList;
 
     boolean isLoading;
     private String ActivityData;
@@ -107,30 +108,31 @@ public class ActivityFragment extends Fragment {
         });
 
         //搜索
-//        btnSearch = view.findViewById(R.id.btn_Activity_search);
-//        etSearch = view.findViewById(R.id.et_Activity_search);
-//        btnSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Message msg = dloadHandler.obtainMessage();
-//                        OkConnect connect = new OkConnect();
-//                        try {
-//                            searchData = connect.run(urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, 0, 1));
-//                            if (!searchData.equals("error"))
-//                                msg.what = SEARCH_SUCCESS;
-//                            else
-//                                msg.what = REQUEST_FAIL;
-//                            dloadHandler.sendMessage(msg);
-//                        } catch (IOException e) {
-//                            msg.what = REQUEST_FAIL;
-//                        }
-//                    }
-//                }).start();
-//            }
-//        });
+        btnSearch = view.findViewById(R.id.btn_activity_search);
+        etSearch = view.findViewById(R.id.et_activity_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = dloadHandler.obtainMessage();
+                        OkConnect connect = new OkConnect();
+                        try {
+                            Log.d(TAG, "run: " + urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, 0, 1));
+                            searchData = connect.run(urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, 0, 1));
+                            if (!searchData.equals("error"))
+                                msg.what = SEARCH_SUCCESS;
+                            else
+                                msg.what = REQUEST_FAIL;
+                            dloadHandler.sendMessage(msg);
+                        } catch (IOException e) {
+                            msg.what = REQUEST_FAIL;
+                        }
+                    }
+                }).start();
+            }
+        });
 
         initData();
 
@@ -173,28 +175,28 @@ public class ActivityFragment extends Fragment {
                         } else
                             adapter.notifyDataSetChanged();
                         break;
-//                    case SEARCH_SUCCESS:
-//                        activities.clear();
-//                        ActivitySearch = JsonUtil.parseJson(searchData, ActivitySearch.class);
-//                        if (ActivitySearch.getErrorCode() != 0)
-//                            Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
-//                        else {
-//                            if (!ActivitySearch.getErrorStr().equals("ok"))
-//                                Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
-//                            else {
-//                                resultsSearch = ActivitySearch.getResults();
-//                                association_search = resultsSearch.getAssociation();
-//                                for (ActivitySearch.ResultsBean.AssociationBean as : association_search) {
-//                                    activity = new Activity(WelcomeFragment.path[random.nextInt(7)], as.getNick_name(),
-//                                            as.getType(), as.getStar(), as.getWord_introduction(),
-//                                            as.getId());
-//                                    activities.add(activity);
-//                                }
-//                            }
-//                        }
-//                        adapter = new ActivityAdapter(activities);
-//                        recyclerView.setAdapter(adapter);
-//                        break;
+                    case SEARCH_SUCCESS:
+                        activities.clear();
+                        activitySearch = JsonUtil.parseJson(searchData, activitysearch.class);
+                        if (activitySearch.getErrorCode() != 0)
+                            Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
+                        else {
+                            if (!activitySearch.getErrorStr().equals("ok"))
+                                Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
+                            else {
+                                resultsSearch = activitySearch.getResults();
+                                activitySearchList = resultsSearch.getActivity();
+                                for (activitysearch.ResultsBean.ActivityBean at : activitySearchList) {
+                                    activity = new Activity(WelcomeFragment.path[random.nextInt(7)], at.getName(),
+                                            at.getType(), at.getStatus(), at.getLocation(),
+                                            at.getId());
+                                    activities.add(activity);
+                                }
+                            }
+                        }
+                        adapter = new ActivityAdapter(activities);
+                        recyclerView.setAdapter(adapter);
+                        break;
                     case REQUEST_FAIL:
                         break;
                     default:
@@ -224,6 +226,6 @@ public class ActivityFragment extends Fragment {
     }
 
     private String urlOp(String tmp, String searchContent, int tp, int stat, int pg) {
-        return tmp + "?association=" + searchContent + "&type=" + tp + "&status=" + stat + "&page=" + pg;
+        return tmp + "?activity=" + searchContent + "&type=" + tp + "&status=" + stat + "&page=" + pg;
     }
 }
