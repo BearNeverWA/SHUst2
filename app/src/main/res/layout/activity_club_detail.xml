@@ -203,7 +203,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/item_rectangle" />
+                android:background="@drawable/item_rectangle"
+                android:padding="15dp" />
 
         </LinearLayout>
 

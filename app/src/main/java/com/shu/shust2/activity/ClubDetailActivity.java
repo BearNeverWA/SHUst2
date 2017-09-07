@@ -21,6 +21,7 @@ import com.shu.shust2.util.JsonUtil;
 import com.shu.shust2.util.OkConnect;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ClubDetailActivity extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class ClubDetailActivity extends AppCompatActivity {
     private Handler handler;
     private String clubDetailData;
     private ClubDetail clubDetail;
+    private ClubDetail.ResultsBean resultsBean;
 
     private static final String TAG = "ClubDetailActivity";
     private static final String URL_TEMP = "http://api.dev.shust.cn/association/detail?id=";
@@ -72,8 +74,79 @@ public class ClubDetailActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case REQUEST_SUCCESS:
-                        clubDetail= JsonUtil.parseJson(clubDetailData,ClubDetail.class);
+                        clubDetail = JsonUtil.parseJson(clubDetailData, ClubDetail.class);
+                        if (clubDetail.getErrorCode() == 0) {
+                            if (clubDetail.getErrorStr().equals("ok")) {
+                                resultsBean = clubDetail.getResults();
+                                switch (resultsBean.getType()) {
+                                    case "学术科技":
+                                        type.setBackgroundResource(R.drawable.blue_border);
+                                        type.setTextColor(getResources().getColor(R.color.soft_blue));
+                                        break;
+                                    case "体育健身":
+                                        type.setBackgroundResource(R.drawable.green_border);
+                                        type.setTextColor(getResources().getColor(R.color.soft_green));
+                                        break;
+                                    case "公益实践":
+                                        type.setBackgroundResource(R.drawable.orange_border);
+                                        type.setTextColor(getResources().getColor(R.color.orange));
+                                        break;
+                                    case "文化艺术":
+                                        type.setBackgroundResource(R.drawable.red_border);
+                                        type.setTextColor(getResources().getColor(R.color.red));
+                                        break;
+                                    case "社会科学":
+                                        type.setBackgroundResource(R.drawable.pink_round);
+                                        type.setTextColor(getResources().getColor(R.color.pink));
+                                        break;
+                                    case "理论学习":
+                                        type.setBackgroundResource(R.drawable.purple_border);
+                                        type.setTextColor(getResources().getColor(R.color.purple));
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                if (resultsBean.getType().equals(""))
+                                    type.setText("无");
+                                else
+                                    type.setText(resultsBean.getType());
 
+                                String st;
+                                switch (resultsBean.getStar()) {
+                                    case 1:
+                                        st = "一星级";
+                                        break;
+                                    case 2:
+                                        st = "两星级";
+                                        break;
+                                    case 3:
+                                        st = "三星级";
+                                        break;
+                                    case 4:
+                                        st = "四星级";
+                                        break;
+                                    case 5:
+                                        st = "五星级";
+                                        break;
+                                    default:
+                                        st = "无";
+                                        break;
+                                }
+                                star.setText(st);
+                                if (resultsBean.getChairperson().equals(""))
+                                    chairman.setText("无");
+                                else
+                                    chairman.setText(resultsBean.getChairperson());
+                                if (resultsBean.getInstructor().equals(""))
+                                    teacher.setText("无");
+                                else
+                                    teacher.setText(resultsBean.getInstructor());
+                                if (resultsBean.getIntroduction().equals(""))
+                                    intro.setText("无");
+                                else
+                                    intro.setText(resultsBean.getIntroduction());
+                            }
+                        }
                         break;
                     case REQUEST_FAIL:
                         break;
