@@ -122,7 +122,6 @@ public class ClubAdapter extends Adapter<ViewHolder> {
                     break;
             }
             ((ItemViewHolder) holder).clubStar.setText(star);
-            ((ItemViewHolder) holder).clubIntro.setText(club.getClubIntro());
             ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -143,7 +142,6 @@ public class ClubAdapter extends Adapter<ViewHolder> {
         TextView clubName;
         TextView clubType;
         TextView clubStar;
-        TextView clubIntro;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -151,7 +149,6 @@ public class ClubAdapter extends Adapter<ViewHolder> {
             clubName = itemView.findViewById(R.id.tv_club_name);
             clubType = itemView.findViewById(R.id.tv_club_type);
             clubStar = itemView.findViewById(R.id.tv_club_star);
-            clubIntro = itemView.findViewById(R.id.tv_club_intro);
         }
     }
 

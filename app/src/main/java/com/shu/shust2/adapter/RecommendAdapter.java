@@ -53,7 +53,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         recommend = mRecommendList.get(position);
         holder.name.setText(recommend.getName());
         Glide.with(mContext).load(recommend.getImageId()).into(holder.imageView);
@@ -63,6 +63,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos = holder.getAdapterPosition();
+                recommend = mRecommendList.get(pos);
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("title", recommend.getName());
                 intent.putExtra("location", recommend.getLocation());
