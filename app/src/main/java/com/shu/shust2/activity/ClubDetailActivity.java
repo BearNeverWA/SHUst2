@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -144,7 +145,7 @@ public class ClubDetailActivity extends AppCompatActivity {
                                 if (resultsBean.getIntroduction().equals(""))
                                     intro.setText("无");
                                 else
-                                    intro.setText(resultsBean.getIntroduction());
+                                    intro.setText(Html.fromHtml(resultsBean.getIntroduction()));
                             }
                         }
                         break;
