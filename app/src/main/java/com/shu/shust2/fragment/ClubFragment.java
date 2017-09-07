@@ -68,6 +68,7 @@ public class ClubFragment extends Fragment {
 
     private static String CLUB_URL_TMP = "http://api.dev.shust.cn/association/list";
     private static String SEARCH_URL_TMP = "http://api.dev.shust.cn/association/result";
+    private int page;
     private int pageNum;
     private int checkedId;
 
@@ -139,14 +140,18 @@ public class ClubFragment extends Fragment {
                         checkedId = 1;
                         break;
                 }
+                page = (adapter.getItemCount() - 1) / 13;
+                if (page == 0) {
+                    pageNum = 1;
+                } else
+                    pageNum = page + 1;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         Message msg = dloadHandler.obtainMessage();
                         OkConnect connect = new OkConnect();
                         try {
-                            Log.d(TAG, "run: " + urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, checkedId, 1));
-                            searchData = connect.run(urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, checkedId, 1));
+                            searchData = connect.run(urlOp(SEARCH_URL_TMP, etSearch.getText().toString(), 0, checkedId, pageNum));
                             if (!searchData.equals("error"))
                                 msg.what = SEARCH_SUCCESS;
                             else
@@ -166,7 +171,7 @@ public class ClubFragment extends Fragment {
     }
 
     private void initData() {
-        int page = (adapter.getItemCount() - 1) / 13;
+        page = (adapter.getItemCount() - 1) / 13;
         if (page == 0) {
             pageNum = 1;
         } else
@@ -236,6 +241,7 @@ public class ClubFragment extends Fragment {
                 Message msg = dloadHandler.obtainMessage();
                 OkConnect connect = new OkConnect();
                 try {
+                    Log.d(TAG, "run: " + urlOp(CLUB_URL_TMP, "", 0, 0, pageNum));
                     clubData = connect.run(urlOp(CLUB_URL_TMP, "", 0, 0, pageNum));
                     if (!clubData.equals("error")) {
                         msg.what = REQUEST_SUCCESS;
