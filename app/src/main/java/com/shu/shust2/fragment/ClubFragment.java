@@ -105,10 +105,6 @@ public class ClubFragment extends Fragment {
         } else
             pageNum = page + 1;
         random = new Random();
-//        for (int i = 0; i < 10; i++) {
-//            club = new Club(WelcomeFragment.path[random.nextInt(7)], "测试" + i, types[random.nextInt(5)], random.nextInt(4) + 1, "测试介绍" + i);
-//            clubs.add(club);
-//        }
 
         //club列表数据初始化
         dloadHandler = new Handler() {

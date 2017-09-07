@@ -135,6 +135,8 @@ public class WelcomeFragment extends Fragment implements OnBannerListener {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case REQUEST_SUCCESS:
+                        recommends.clear();
+                        hots.clear();
                         indexBean = JsonUtil.parseJson(indexData, IndexBean.class);
                         if (indexBean.getErrorCode() != 0)
                             Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();

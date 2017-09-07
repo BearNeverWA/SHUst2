@@ -56,7 +56,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         recommend = mRecommendList.get(position);
         holder.name.setText(recommend.getName());
-        Glide.with(mContext).load(recommend.getImageId()).into(holder.imageView);
+        Glide.with(mContext).load(recommend.getImageId()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher).into(holder.imageView);
         holder.location.setText(recommend.getLocation());
 
         //注册点击事件
